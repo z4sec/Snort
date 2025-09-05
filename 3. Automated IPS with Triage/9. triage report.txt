@@ -1,0 +1,37 @@
+Date of Incident: September 3, 2025
+Time of Incident: 04:52:52 UTC
+
+
+1. Executive Summary
+A DNS Amplification attack attempt was detected and successfully blocked by the Snort Intrusion Prevention System (IPS). The attack originated from an internal host within the network and was targeted at another internal system. The IPS performed its intended function and dropped the malicious traffic, preventing potential service disruption.
+
+2. Detailed Analysis
+
+- Alert Message --> DNS Amplification Attack - BLOCKED
+
+- Action Taken --> Drop
+
+- Source IP --> 192.168.67.129
+
+- Destination IP --> 192.168.67.128:53
+
+- Protocol --> UDP 
+
+- Sensor/Host --> ubuntu-VMware-Virtual-Platform
+
+- Rule ID --> 1:1000008:1
+
+
+3. Impact Assessment
+
+Category: Attempted Network Attack / DDoS Precursor
+
+Severity: Critical. While the attack was blocked, the presence of a compromised internal host (192.168.67.129) poses a significant risk. This host could be used for further internal attacks or attacks against external entities.
+
+Scope: The immediate attack was stopped. The compromised host needs to be isolated to prevent further malicious activity.
+
+4. Conclusion
+
+The Snort IPS performed effectively by blocking a potentially disruptive DNS amplification attack. The primary concern is no longer the blocked attack itself, but the compromised internal asset that initiated it. The incident highlights a potential internal security breach that requires immediate containment and investigation.
+
+Reporter :- Zeeshan Alam
