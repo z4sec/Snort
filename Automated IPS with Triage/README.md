@@ -1,73 +1,46 @@
-Phase 3: Snort IPS Mode
+Phase 3: Snort IPS Mode with Triage 🛑
+   ## Overview
+   Configures **Snort** in inline IPS mode to block **DNS amplification** attacks (port 53). Logs forwarded to **Splunk** via Forwarder. Includes alerts, dashboard, and triage report.
 
-Overview
+   ## Setup
+   1. **Snort Inline Mode**:
+      - Edit `/etc/snort/snort.conf`: `config policy_mode: inline`
+      - Add to `local.rules`:
+        ```bash
+        drop udp any any -> any 53 (msg:"DNS Amplification Attack - BLOCKED"; content:"|00 01 00 00|"; sid:1000004;)
+        ```
+   2. **Run Snort**:
+      - `snort -Q -c /etc/snort/snort.conf -A fast`
+   3. **Attack**:
+      - Kali: `dig @192.168.67.128 google.com`
+   4. **Splunk**:
+      - Forward logs to `192.168.67.130:9997`.
+      - Alert for `"DNS Amplification Attack - BLOCKED"`.
+      - Update dashboard.
+   5. **Triage**:
+      - Analyze in `triage.txt`.
 
-This phase configures Snort in inline IPS mode on Ubuntu to block DNS amplification attacks. Logs are forwarded to Splunk via the Forwarder (port 9997), visualized in an updated dashboard, and analyzed in a triage write-up. The attack is simulated using DIIG from Kali Linux.
+   ## Files
+   - 📜 **Configs**:
+     - `configs/snort.conf`
+     - `configs/local.rules`
+   - 🛠️ **Scripts**:
+     - `scripts/dig.txt`: `dig @192.168.67.128 google.com`
+   - 📝 **Triage**:
+     - `triage.txt`: DNS attack analysis
+   - 📸 **Screenshots**:
+     - `1- snort.conf edited.png`: Inline mode.
+     - `2- local.rules configured.png`: DNS rule.
+     - `3- attack from kali.png`: Dig attack.
+     - `4- IPS detected.png`: Block confirmation.
+     - `5- splunk index.png`: Splunk index.
+     - `6- edit alert.png`: Alert creation.
+     - `7- alert triggered.png`: DNS alert.
+     - `8- Triage.png`: Triage process.
+     - `9- triage report.txt`: Original triage report.
 
-Setup and Steps
-
-
-
-
-
-Edit snort.conf on Ubuntu: Set config policy_mode: inline.
-
-
-
-Add drop rule for DNS amplification in local.rules:
-
-
-
-
-
-Example: drop udp any any -> any 53 (msg:"DNS Amplification Attack - BLOCKED content:"|00 01 00 00|"; sid:1000004;).
-
-
-
-Run Snort in inline mode: snort -Q -c /etc/snort/snort.conf -A fast.
-
-
-
-Simulate attack from Kali: dig @192.168.67.128 google.com.
-
-
-
-Verify block in DIG output (communication error).
-
-
-
-Ensure Splunk Forwarder sends logs to 192.168.67.130:9997.
-
-
-
-In Splunk, create alert for DNS drop events.
-
-
-
-Update dashboard to include DNS alert alongside ICMP, port scan, and FTP.
-
-
-
-Write triage report analyzing the blocked DNS amplification attack.
-
-Screenshots :- 
-
-Triage Summary
-
-
-
-
-
-Attack: DNS amplification attempt.
-
-
-
-Action: Snort IPS dropped UDP packets, preventing amplification.
-
-
-
-Splunk: Logged drop events and visualized in dashboard.
-
-
-
-Analysis: Detailed in triage report.txt
+   ## Triage Summary
+   - **Attack**: DNS amplification attack.
+   - **Snort**: Dropped UDP packets.
+   - **Splunk**: Logged drop events, visualized in dashboard.
+   - **Analysis**: In `triage.txt`.
