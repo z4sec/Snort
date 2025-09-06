@@ -13,7 +13,7 @@ Snort IDS/IPS Home Lab with Splunk Integration 🛡️
      - 📊 Splunk: SIEM for monitoring/visualization.
      - 🚀 Splunk Forwarder: Log transfer (port 9997).
      - ⚔️ Hydra: FTP brute force.
-     - 🔎 Dig: DNS amplification (corrected from `diig`).
+     - 🔎 Dig: DNS amplification.
      - 🐍 Python: HTTP server (Phase 1).
 
    ## Project Phases
@@ -29,10 +29,9 @@ Snort IDS/IPS Home Lab with Splunk Integration 🛡️
      - Phase 1: Logs served via Python server, manually uploaded to Splunk.
      - Phases 2–3: Logs forwarded via Forwarder to Splunk.
    - **Attacks**:
-     - 🔔 ICMP: `ping <TARGET_IP>`
-     - 🔍 Port scan: `nmap <TARGET_IP>`
+     - 🔔 ICMP: `ping 192.168.67.128`
      - 🔑 FTP brute force: `hydra -l <FTP_USER> -P /usr/share/wordlists/rockyou.txt ftp://<TARGET_IP>`
-     - 📡 DNS amplification: `dig @<TARGET_IP> google.com`
+     - 📡 DNS amplification: `dig 192.168.67.128 google.com`
 
    ## Setup Instructions
    1. **VMs**:
@@ -43,7 +42,7 @@ Snort IDS/IPS Home Lab with Splunk Integration 🛡️
       - Configure `/etc/snort/snort.conf` and `local.rules` per phase.
       - Example (Phase 1):
         ```bash
-        alert icmp any any -> <TARGET_IP> any (msg:"ICMP Ping Detected"; sid:1000001;)
+        alert icmp any any -> 192.168.67.128 any (msg:"ICMP Ping Detected"; sid:1000001;)
         ```
    3. **Splunk**:
       - Phase 1: Manually upload logs.
@@ -58,7 +57,6 @@ Snort IDS/IPS Home Lab with Splunk Integration 🛡️
    - 📝 **Triage**: DNS attack analysis (Phase 3).
 
    ## Challenges
-   - 🐛 **Git**: Force push deleted remote files; restored via local push.
    - 📝 **Naming**: Fixed typos (e.g., “Detcted” to “Detected”) and organized files.
 
    ## Future Improvements
