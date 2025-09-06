@@ -1,284 +1,73 @@
-Snort IDS/IPS Home Lab with Splunk Integration
-
-Overview
-
-This project is a Security Operations Center (SOC) home lab demonstrating intrusion detection and prevention using Snort and log analysis with Splunk. Designed as a portfolio piece for a SOC analyst role, it showcases skills in rule creation, log forwarding, attack simulation, alerting, dashboard visualization, and incident triage across three phases.
-
-
-
-
-
-Virtual Machines:
-
-
-
-
-
-Kali Linux: Attacker simulating ICMP ping, port scans, FTP brute force, and DNS amplification.
-
-
-
-Ubuntu: Hosts Snort (IDS/IPS), Splunk Forwarder, and vsftpd (FTP server).
-
-
-
-Windows: Runs Splunk Enterprise for log indexing, alerts, and dashboards.
-
-
-
-Tools:
-
-
-
-
-
-Snort: IDS/IPS for detection and blocking.
-
-
-
-Splunk: SIEM for monitoring and visualization.
-
-
-
-Splunk Forwarder: Automates log transfer (port 9997).
-
-
-
-Hydra: FTP brute force tool.
-
-
-
-DIIG (likely dig): DNS amplification tool.
-
-
-
-Python: HTTP server for manual log transfer.
-
-
-
-Skills Demonstrated: Snort configuration, Splunk integration, rule writing, attack simulation, alert creation, dashboard design, and incident triage.
-
-Project Phases
-
-
-
-
-
-
-
-Phase
-
-
-
-Description
-
-
-
-Key Features
-
-
-
-Details
-
-
-
-
-
-Basic IDS
-
-
-
-Manual Snort IDS for ICMP ping and port scan detection.
-
-
-
-Custom rules, Python HTTP server, manual Splunk upload, basic alerts.
-
-
-
-Snort Basic with Splunk Visualization
-
-
-
-
-
-Automated IDS
-
-
-
-Automated log forwarding, FTP brute force detection.
-
-
-
-Splunk Forwarder, Hydra attack, Splunk dashboard for ICMP/port scan/FTP alerts.
-
-
-
-Automated IDS
-
-
-
-
-
-IPS Mode
-
-
-
-Inline Snort IPS to block DNS amplification attacks.
-
-
-
-Drop rules, DIIG attack, Splunk alerts, triage report.
-
-
-
-Automated IPS with Triage
-
-Lab Architecture
-
-
-
-
-
-Network: Kali attacks Ubuntu (<TARGET_IP>, e.g., 192.168.67.128); logs sent to Splunk on Windows (<SPLUNK_IP>).
-
-
-
-Data Flow:
-
-
-
-
-
-Phase 1: Snort logs (/var/log/snort/alert.fast) served via Python server, manually uploaded to Splunk.
-
-
-
-Phases 2–3: Logs forwarded via Splunk Forwarder (port 9997) to Splunk for real-time monitoring.
-
-
-
-Attacks:
-
-
-
-
-
-ICMP ping: ping <TARGET_IP>.
-
-
-
-Port scan: nmap <TARGET_IP>.
-
-
-
-FTP brute force: hydra -l <FTP_USER> -P /usr/share/wordlists/rockyou.txt ftp://<TARGET_IP>.
-
-
-
-DNS amplification: diig @<TARGET_IP> google.com.
-
-Setup Instructions
-
-
-
-
-
-VM Setup:
-
-
-
-
-
-Kali Linux: Install nmap, Hydra, DIIG (or dig).
-
-
-
-Ubuntu: Install Snort (sudo apt-get install snort), vsftpd, Splunk Forwarder.
-
-
-
-Windows: Install Splunk Enterprise.
-
-
-
-Snort Configuration:
-
-
-
-
-
-Edit /etc/snort/snort.conf and local.rules per phase.
-
-
-
-Example rule (Phase 1):
-
-alert icmp any any -> <TARGET_IP> any (msg:"ICMP Ping Detected"; sid:1000001;)
-
-
-
-Splunk:
-
-
-
-
-
-Phase 1: Manually upload logs.
-
-
-
-Phases 2–3: Configure Forwarder (inputs.conf) and Splunk receiver (port 9997).
-
-
-
-Attacks: Simulate from Kali as described in phase READMEs.
-
-Files and Organization
-
-
-
-
-
-Configs: snort.conf, local.rules, inputs.conf (Splunk Forwarder), firewall.txt (UFW commands).
-
-
-
-Scripts: Commands for Python server, Hydra, DIIG.
-
-
-
-Screenshots: Visuals for setups, attacks, logs, alerts, dashboards.
-
-
-
-Triage: Report in Phase 3 analyzing DNS amplification block.
-
-
-
-Monitoring: Create Splunk alerts and dashboards.
-
-Future Improvements
-
-
-
-
-
-Map alerts to MITRE ATT&CK framework.
-
-
-
-Add Wireshark for packet analysis.
-
-
-
-Automate triage with Python.
-
-
-
-Simulate more attacks (e.g., SQL injection).
-
-Contact
-
-LinkedIn: Zeeshan Alam
-This project reflects my hands-on experience in IDS/IPS, SIEM, and SOC workflows.
+Snort IDS/IPS Home Lab with Splunk Integration 🛡️
+   ![GitHub repo size](https://img.shields.io/github/repo-size/z4sec/Snort) ![GitHub last commit](https://img.shields.io/github/last-commit/z4sec/Snort) ![License](https://img.shields.io/github/license/z4sec/Snort)
+
+   ## Overview
+   This **Security Operations Center (SOC)** home lab showcases **Snort** for intrusion detection/prevention and **Splunk** for log analysis, demonstrating skills in rule creation, log forwarding, attack simulation, alerting, dashboard design, and incident triage for a SOC analyst role.
+
+   - **Virtual Machines**:
+     - 🐉 **Kali Linux**: Simulates attacks (ICMP ping, port scans, FTP brute force, DNS amplification).
+     - 🐧 **Ubuntu**: Runs Snort (IDS/IPS), Splunk Forwarder, vsftpd (FTP server).
+     - 🖥️ **Windows**: Hosts Splunk Enterprise for indexing, alerts, dashboards.
+   - **Tools**:
+     - 🔍 Snort: IDS/IPS for detection/blocking.
+     - 📊 Splunk: SIEM for monitoring/visualization.
+     - 🚀 Splunk Forwarder: Log transfer (port 9997).
+     - ⚔️ Hydra: FTP brute force.
+     - 🔎 Dig: DNS amplification (corrected from `diig`).
+     - 🐍 Python: HTTP server (Phase 1).
+
+   ## Project Phases
+   | Phase | Description | Key Features | Details |
+   |-------|-------------|--------------|---------|
+   | 🔧 Basic IDS | Manual Snort IDS for ICMP/port scan detection. | Custom rules, Python server, manual Splunk upload. | [Snort Basic with Splunk Visualization](Snort%20Basic%20with%20Splunk%20Visualization/README.md) |
+   | 🤖 Automated IDS | Automated log forwarding, FTP brute force detection. | Splunk Forwarder, Hydra attack, dashboards. | [Automated IDS](Automated%20IDS/README.md) |
+   | 🛑 IPS Mode | Inline IPS for DNS amplification blocking. | Drop rules, dig attack, triage report. | [Automated IPS with Triage](Automated%20IPS%20with%20Triage/README.md) |
+
+   ## Lab Architecture
+   - **Network**: Kali attacks Ubuntu (`<TARGET_IP>`); logs sent to Splunk (`<SPLUNK_IP>`).
+   - **Data Flow**:
+     - Phase 1: Logs served via Python server, manually uploaded to Splunk.
+     - Phases 2–3: Logs forwarded via Forwarder to Splunk.
+   - **Attacks**:
+     - 🔔 ICMP: `ping <TARGET_IP>`
+     - 🔍 Port scan: `nmap <TARGET_IP>`
+     - 🔑 FTP brute force: `hydra -l <FTP_USER> -P /usr/share/wordlists/rockyou.txt ftp://<TARGET_IP>`
+     - 📡 DNS amplification: `dig @<TARGET_IP> google.com`
+
+   ## Setup Instructions
+   1. **VMs**:
+      - Kali: Install `nmap`, `hydra`, `dig`.
+      - Ubuntu: Install Snort (`sudo apt-get install snort`), `vsftpd`, Splunk Forwarder.
+      - Windows: Install Splunk Enterprise.
+   2. **Snort**:
+      - Configure `/etc/snort/snort.conf` and `local.rules` per phase.
+      - Example (Phase 1):
+        ```bash
+        alert icmp any any -> <TARGET_IP> any (msg:"ICMP Ping Detected"; sid:1000001;)
+        ```
+   3. **Splunk**:
+      - Phase 1: Manually upload logs.
+      - Phases 2–3: Configure Forwarder (`inputs.conf`) and receiver (port 9997).
+   4. **Attacks**: Run from Kali (see phase READMEs).
+   5. **Monitoring**: Set Splunk alerts/dashboards.
+
+   ## Files
+   - 📜 **Configs**: `snort.conf`, `local.rules`, `inputs.conf`, `firewall.txt`.
+   - 🛠️ **Scripts**: Python server, Hydra, dig commands.
+   - 📸 **Screenshots**: Setup, attacks, logs, alerts, dashboards.
+   - 📝 **Triage**: DNS attack analysis (Phase 3).
+
+   ## Challenges
+   - 🐛 **Git**: Force push deleted remote files; restored via local push.
+   - 📝 **Naming**: Fixed typos (e.g., “Detcted” to “Detected”) and organized files.
+
+   ## Future Improvements
+   - 🗺️ Map alerts to MITRE ATT&CK.
+   - 🔍 Add Wireshark packet analysis.
+   - 🤖 Automate triage with Python.
+   - ⚔️ Simulate SQL injection attacks.
+
+   ## Contact
+   👤 LinkedIn: [Zeeshan Alam](https://www.linkedin.com/in/zeeshan-alam-073102246)
+
+   ⭐ If you find this project useful, please star the repository!
